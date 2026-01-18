@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "./CartContext";
-import { Toast } from "../utils/Toast.js";
+import { Toast } from "../utils/toast.js";
 
 const CheckoutContext = createContext()
 
