@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { Toast } from "../utils/Toast";
+import { Toast } from "../utils/Toast.js";
 
 const AuthContext = createContext();
 
