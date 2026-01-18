@@ -1,58 +1,50 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Outlet, useParams } from 'react-router-dom'
-import ProductCard from '../components/ProductCard';
-import { useCart } from '../context/CartContext';
+import React from "react";
+import { useParams } from "react-router-dom";
+import ProductCard from "../components/ProductCard";
+import { useCart } from "../context/CartContext";
+import useGet from "../hooks/useGet";
+import TopBar from "../components/TopBar";
 
 function Categories() {
-
     const { categoryName } = useParams();
-    const [results, setResults] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const { handleAddToCart } = useCart();
 
 
-    const { handleAddToCart } = useCart()
+    const { data, loading, error } = useGet(`/products/category/${encodeURIComponent(categoryName)}`);
 
-    const fetchDataByCategory = async () => {
-        try {
-            setIsLoading(true)
-            const url = `https://dummyjson.com/products/category/${categoryName}`
-            const response = await axios.get(url);
-            setResults(response.data.products)
-        } catch (error) {
-            console.error("error", error);
-        } finally {
-            setIsLoading(false)
-        }
-    }
+    const results = data?.products || [];
 
-    useEffect(() => {
-        fetchDataByCategory();
-    }, [])
+
+    if (loading) return <p className="text-center py-10">Loading...</p>;
+    if (error) return <p className="text-center py-10 text-red-500">{error}</p>;
 
     return (
-        <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto px-4 py-6'>
-            {results.length > 0 ? (
-                results.map((item, index) => (
-                    <ProductCard
-                        key={index}
-                        id={item.id}
-                        image={item.thumbnail}
-                        title={item.title}
-                        price={item.price}
-                        description={item.description}
-                        discountPercentage={item.discountPercentage}
-                        rating={item.rating}
-                        stock={item.stock}
-                        brand={item.brand}
-                        addProduct={() => handleAddToCart(item)}
-                    />
-                ))
-            ) : (
-                <span>No product found</span>
-            )}
+        <div className="max-w-6xl mx-auto px-4 py-6">
+            <TopBar totalProduct={results.length} />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                {results.length > 0 ? (
+                    results.map((item) => (
+                        <ProductCard
+                            key={item.id}
+                            id={item.id}
+                            image={item.thumbnail}
+                            title={item.title}
+                            price={item.price}
+                            description={item.description}
+                            discountPercentage={item.discountPercentage}
+                            rating={item.rating}
+                            stock={item.stock}
+                            brand={item.brand}
+                            addProduct={() => handleAddToCart(item)}
+                        />
+                    ))
+                ) : (
+                    <p>No product found</p>
+                )}
+            </div>
         </div>
-    )
+    );
 }
 
-export default Categories
+export default Categories;

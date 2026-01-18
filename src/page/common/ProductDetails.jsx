@@ -1,35 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Star, Truck, ShieldCheck, RotateCcw, Package } from "lucide-react";
 import axios from 'axios';
 import { Link, useParams } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import TopBar from "../../components/TopBar";
+import useGet from "../../hooks/useGet";
 
 function ProductDetails() {
-    const [product, setProduct] = useState(null)
-    const [isLoading, setIsLoading] = useState(false);
     const { id } = useParams()
-
     const { cart, handleAddToCart } = useCart()
+    const {
+        data,
+        error,
+        loading
+    } = useGet(`/products/${id}`)
 
-    // fetch product by id
-    const fetchProductById = async () => {
-        try {
-            setIsLoading(true);
-            const url = `https://dummyjson.com/products/${id}`
-            const response = await axios.get(url);
-            setProduct(response.data);
-        } catch (error) {
-            console.error("Error", error);
-        } finally {
-            setIsLoading(false)
-        }
-    }
+    const product = data || {}
 
     const isInCart = cart.some(item => item.id === product.id)
-
-    useEffect(() => {
-        fetchProductById()
-    }, [id])
 
     if (!product) {
         return (
@@ -39,8 +27,12 @@ function ProductDetails() {
         );
     }
 
+    if (loading) return <p className="text-center py-10">Loading...</p>;
+    if (error) return <p className="text-center py-10 text-red-500">{error}</p>;
+
     return (
         <div className="max-w-6xl mx-auto px-4 py-6">
+            <TopBar totalProduct={1} />
             {/* Breadcrumb */}
             <div className="text-sm text-gray-500 mb-4">
                 Home / <span className="capitalize">{product.category}</span> /{" "}
