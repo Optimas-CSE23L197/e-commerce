@@ -1,8 +1,12 @@
 import { createContext, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "./CartContext";
 
 const CheckoutContext = createContext()
 
 export default function CheckoutProvider({ children }) {
+
+    const { cart } = useCart()
 
     const [address, setAddress] = useState({
         fullName: "",
@@ -16,6 +20,8 @@ export default function CheckoutProvider({ children }) {
     const [paymentMethod, setPaymentMethod] = useState("cod")
     const [isOrdered, setIsOrdered] = useState(false)
     const [orderId, setOrderId] = useState("");
+
+    const navigate = useNavigate();
 
     // handle address change
     const handleAddressChange = (e) => {
@@ -35,15 +41,24 @@ export default function CheckoutProvider({ children }) {
     };
 
     const handleOrder = () => {
+
+        if (cart.length <= 0) {
+            alert("cart is empty");
+            return;
+        }
+
         if (!address.fullName || !address.phoneNumber || !address.fullAddress) {
             setIsOrdered(false);
             setOrderId("");
+            alert("add your address for delivery");
             return;
         }
 
         const id = generateOrderId();
         setOrderId(id);
         setIsOrdered(true)
+        alert("Order successful", orderId);
+        console.log(orderId);
     }
 
 

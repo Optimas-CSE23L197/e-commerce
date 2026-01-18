@@ -5,7 +5,8 @@ import { useCheckout } from "../../context/CheckoutContext";
 function Checkout() {
 
     const { totalPrice, deliveryCharge, tax, finalPrice } = useCart();
-    const { address, handleAddressChange, paymentMethod, setPaymentMethod, handleOrder } = useCheckout()
+    const { address, handleAddressChange, paymentMethod, setPaymentMethod, handleOrder, orderId } = useCheckout()
+
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-6">

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Star, Truck, ShieldCheck, RotateCcw, Package } from "lucide-react";
 import axios from 'axios';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 
 function ProductDetails() {
     const [product, setProduct] = useState(null)
     const [isLoading, setIsLoading] = useState(false);
     const { id } = useParams()
+
+    const { cart, handleAddToCart } = useCart()
 
     // fetch product by id
     const fetchProductById = async () => {
@@ -21,6 +24,8 @@ function ProductDetails() {
             setIsLoading(false)
         }
     }
+
+    const isInCart = cart.some(item => item.id === product.id)
 
     useEffect(() => {
         fetchProductById()
@@ -51,7 +56,7 @@ function ProductDetails() {
                         <img
                             src={product.thumbnail}
                             alt={product.title}
-                            className="w-full h-[320px] sm:h-[420px] object-cover"
+                            className="w-full h-[320px] sm:h-[420px] object-contain"
                         />
                     </div>
 
@@ -151,9 +156,19 @@ function ProductDetails() {
 
                     {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row gap-3">
-                        <button className="w-full sm:w-auto flex-1 px-5 py-3 rounded-2xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
-                            Add to Cart
-                        </button>
+                        {isInCart ? (
+                            <Link
+                                to="/cart"
+                                className="w-full sm:w-auto flex-1 px-5 py-3 text-center rounded-2xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+                                Go to Cart
+                            </Link>
+                        ) : (
+                            <button
+                                onClick={() => handleAddToCart(product)}
+                                className="w-full sm:w-auto flex-1 px-5 py-3 rounded-2xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+                                Add to Cart
+                            </button>
+                        )}
 
                         <button className="w-full sm:w-auto px-5 py-3 rounded-2xl border border-gray-200 bg-white font-semibold hover:bg-gray-50 transition">
                             ❤️ Wishlist

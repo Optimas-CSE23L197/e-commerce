@@ -136,7 +136,7 @@ function Home() {
                                                     categories.map((item) => (
                                                         <li key={item.slug}>
                                                             <Link
-                                                                to={item.url}
+                                                                to={`/categories/${item.slug}`}
                                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                             >
                                                                 {item.name}
@@ -163,6 +163,7 @@ function Home() {
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     onFocus={() => setIsVisible(true)}
+                                    onBlur={() => setIsVisible(false)}
                                     className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                                 />
 
@@ -171,7 +172,7 @@ function Home() {
                                         <div className="max-h-[280px] overflow-y-auto">
                                             {results.length > 0 ? (
                                                 results.map((item) => (
-                                                    <Link to={`/product/${item.id}`}>
+                                                    <Link onMouseDown={(e) => e.preventDefault()} to={`/product/${item.id}`}>
                                                         <div
                                                             key={item.id}
                                                             className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 border-b last:border-b-0"
@@ -233,7 +234,7 @@ function Home() {
                     products.map((item, index) => (
                         <ProductCard key={index}
                             id={item.id}
-                            image={item.image}
+                            image={item.thumbnail}
                             title={item.title}
                             price={item.price}
                             description={item.description}

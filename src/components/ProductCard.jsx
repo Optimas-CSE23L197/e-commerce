@@ -12,8 +12,7 @@ function ProductCard({
     rating,
     stock,
     brand,
-    addProduct,
-    getProduct
+    addProduct
 }) {
 
     const { cart } = useCart()
@@ -35,7 +34,7 @@ function ProductCard({
     return (
         <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
             {/* Product Image */}
-            <div className="w-full h-56 bg-gray-100">
+            <div className="w-full h-full bg-gray-100 object-contain">
                 <img
                     src={image}
                     alt={title}
