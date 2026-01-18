@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { Toast } from "../utils/Toast";
 
 const AuthContext = createContext();
 
@@ -12,10 +13,12 @@ export default function AuthProvider({ children }) {
 
     const handleLogin = () => {
         setIsLoggedIn(true)
+        Toast.success("Login successful")
     }
 
     const handleLogout = () => {
         setIsLoggedIn(false)
+        Toast.success("Logout Successful")
     }
 
     const value = {

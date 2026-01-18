@@ -1,3 +1,4 @@
+import { ToastContainer } from 'react-toastify'
 import AuthProvider from './context/AuthContext'
 import CartProvider from './context/CartContext'
 import CheckoutProvider from './context/CheckoutContext'
@@ -11,6 +12,7 @@ function App() {
         <CartProvider>
           <CheckoutProvider>
             <AppRoutes />
+            <ToastContainer />
           </CheckoutProvider>
         </CartProvider>
       </AuthProvider>

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "./CartContext";
+import { Toast } from "../utils/Toast";
 
 const CheckoutContext = createContext()
 
@@ -43,22 +44,21 @@ export default function CheckoutProvider({ children }) {
     const handleOrder = () => {
 
         if (cart.length <= 0) {
-            alert("cart is empty");
+            Toast.error("Cart is empty")
             return;
         }
 
         if (!address.fullName || !address.phoneNumber || !address.fullAddress) {
             setIsOrdered(false);
             setOrderId("");
-            alert("add your address for delivery");
+            Toast.error("add your address for delivery");
             return;
         }
 
         const id = generateOrderId();
         setOrderId(id);
         setIsOrdered(true)
-        alert("Order successful", orderId);
-        console.log(orderId);
+        Toast.success("Order Successful")
     }
 
 
