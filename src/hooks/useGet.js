@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Toast } from "../utils/Toast";
+import { Toast } from "../utils/toast.js";
 import { axiosClient } from "../api/axiosClient";
 
 export default function useGet(url, autoFetch = true) {
