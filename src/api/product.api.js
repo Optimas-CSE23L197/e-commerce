@@ -17,6 +17,9 @@ export const productApi = {
   },
 
   // add product
+  addProduct: () => {
+    return axiosClient.post("/products/add");
+  },
   // update product
   // delete product
 };
