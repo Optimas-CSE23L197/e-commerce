@@ -2,6 +2,7 @@ import React from "react";
 import { useCart } from "../../context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { Toast } from "../../utils/toast.js";
 
 function Cart() {
     const { cart, totalPrice, deliveryCharge, tax, finalPrice, handleRemoveFromCart, increaseQty, decreseQty } = useCart();
@@ -11,7 +12,7 @@ function Cart() {
 
     const gotoCheckoutPage = () => {
         if (cart.length <= 0) {
-            alert("cart is empty")
+            Toast.error("Cart is empty")
             return
         }
 

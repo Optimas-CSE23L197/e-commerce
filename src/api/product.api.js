@@ -22,4 +22,10 @@ export const productApi = {
   },
   // update product
   // delete product
+
+  // sort by title
+  sortByTitle: () => {
+    return axiosClient.get("/products?sortBy=title&order=asc'");
+  },
+  // sort by price
 };

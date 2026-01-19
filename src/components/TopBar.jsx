@@ -14,14 +14,23 @@ function TopBar({ totalProduct }) {
     const [cache, setCache] = useState({})
     const [results, setResults] = useState([])
     const [isVisible, setIsVisible] = useState(false)
+    const [isSortOpen, setIsSortOpen] = useState(false)
+    const [sortOrder, setSortOrder] = useState("desc")
     // login context
     const { isLoggedIn, handleLogin, handleLogout } = useAuth()
     // product cart
-    const { cart, handleAddToCart } = useCart()
+    const { cart } = useCart()
 
     const handleCategoriesDropdownOpen = () => {
         setIsCateOpen((prev) => !prev);
     };
+
+    const handleSortDropDown = () => {
+        setIsSortOpen(prev => !prev);
+    }
+
+    console.log("is login", isLoggedIn);
+
 
     // fetch all categories
     const {
@@ -69,6 +78,9 @@ function TopBar({ totalProduct }) {
         }))
     }, [searchData])
 
+    // sort by title
+
+
     return (
         <div className="bg-white border-b">
             <div className="max-w-6xl mx-auto px-4 py-4">
@@ -82,6 +94,7 @@ function TopBar({ totalProduct }) {
 
                         {/* Filters */}
                         <div className="flex items-center gap-3">
+                            {/* categories */}
                             <div className="relative">
                                 <button
                                     onClick={handleCategoriesDropdownOpen}
@@ -111,6 +124,23 @@ function TopBar({ totalProduct }) {
                                     </div>
                                 )}
                             </div>
+
+                            {/* sort product */}
+                            {/* <div className='relative'>
+                                <button
+                                    onClick={() => handleSortDropDown()}
+                                    className='flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-gray-50 hover:bg-gray-100 text-sm font-medium text-gray-700'>
+                                    Sort <ChevronDown size={18} />
+                                </button>
+                                {isSortOpen && (
+                                    <div className="absolute left-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
+                                        <ul className="max-h-60 overflow-y-auto">
+                                            <li className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-medium cursor-pointer">By Title</li>
+                                            <li className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-medium cursor-pointer">By Price</li>
+                                        </ul>
+                                    </div>
+                                )}
+                            </div> */}
                         </div>
                     </div>
 
@@ -165,7 +195,7 @@ function TopBar({ totalProduct }) {
                             </button>
                         ) : (
                             <button
-                                onClick={handleLogin}
+                                onClick={() => handleLogin("admin")}
                                 className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm font-semibold text-white"
                             >
                                 Login
