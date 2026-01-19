@@ -2,8 +2,8 @@ import { axiosClient } from "./axiosClient";
 
 export const productApi = {
   // fetch products
-  fetchProducts: () => {
-    return axiosClient.get("/products");
+  fetchProducts: (limit, skip) => {
+    return axiosClient.get(`/products?limit=${limit}&skip=${skip}`);
   },
 
   // get product by id
