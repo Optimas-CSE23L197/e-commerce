@@ -5,6 +5,12 @@ import Pagination from "../components/Pagination";
 export default function AdminDashboardUI() {
     const [currentPage, setCurrentPage] = useState(1);
 
+    const [openActionId, setOpenActionId] = useState(null);
+
+    const handleToggleAction = (id) => {
+        setOpenActionId((prev) => (prev === id ? null : id));
+    }
+
     const itemsPerPage = 10;
     const skip = (currentPage - 1) * itemsPerPage;
 
@@ -17,7 +23,6 @@ export default function AdminDashboardUI() {
     const products = productsData?.products || [];
     const totalProducts = productsData?.total || 0;
 
-    // stock stats (only current page data)
     const outOfStock = products.filter((item) => item.stock <= 0);
     const lowStock = products.filter((item) => item.stock < 10);
 
@@ -165,10 +170,35 @@ export default function AdminDashboardUI() {
                                         <td className="px-5 py-4 text-gray-700">{p.rating} ⭐</td>
                                         <td className="px-5 py-4 text-gray-700">{p.brand || "—"}</td>
 
-                                        <td className="px-5 py-4 text-right">
-                                            <button className="h-9 w-9 rounded-xl border border-gray-200 hover:bg-gray-100 transition">
+                                        <td className="px-5 py-4 text-right relative">
+                                            <button
+                                                onClick={() => handleToggleAction(p.id)}
+                                                onBlur={() => setOpenActionId(null)}
+                                                className="h-9 w-9 rounded-xl border border-gray-200 hover:bg-gray-100 transition">
                                                 ⋮
                                             </button>
+
+                                            {openActionId === p.id && (
+                                                <div className="absolute right-2 top-12 z-50 w-44 rounded-2xl border border-gray-200 bg-white shadow-xl">
+                                                    <p className="px-4 py-2 text-xs font-medium text-gray-400">Actions</p>
+
+                                                    <div className="border-t border-gray-100" onMouseDown={(e) => e.preventDefault()}>
+                                                        <button
+                                                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition"
+                                                            onClick={() => console.log("Edit", p.id)}
+                                                        >
+                                                            ✏️ <span>Edit Product</span>
+                                                        </button>
+
+                                                        <button
+                                                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition"
+                                                            onClick={() => console.log("Delete", p.id)}
+                                                        >
+                                                            🗑️ <span>Delete Product</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}
